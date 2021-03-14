@@ -1,33 +1,15 @@
 name: Update gist with WakaTime stats
-
 on:
-  push:
-    branches: 
-      - master
   schedule:
-    - cron: "0 * * * *"
-    
-
+    -Cron: "0 0 0 * * *" ා you can modify "* / 10 * * *" every 10 minutes to facilitate debugging
 jobs:
-
-  build:
-    name: Upddate-gist
+  update-gist:
     runs-on: ubuntu-latest
-    env:
+    steps:
+      - uses: actions/checkout@master
+      - name: Update gist
+        uses: ZindexYG/ waka-box@master   #The original matchai / Waka box is modified to its own
+        env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GIST_ID: 63c1f99cf1571b1055f945528dbf667d
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
-
-    steps:
-
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v2
-      with:
-        go-version: ^1.14
-      id: go
-
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-      
-    - name: Update-gist
-      run:  go run ./cmd/main.go
